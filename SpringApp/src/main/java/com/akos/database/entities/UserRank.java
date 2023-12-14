@@ -4,5 +4,7 @@ public enum UserRank {
     MANAGER,
     BOSS,
     ADMIN,
-    WORKER
+    WORKER,
+    SENIOR,
+    JUNIOR
 }

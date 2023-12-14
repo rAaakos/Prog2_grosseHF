@@ -1,5 +1,9 @@
 package com.akos.database.entities;
 
+import com.akos.database.serializer.LocalDateDeserializer;
+import com.akos.database.serializer.LocalDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +21,7 @@ import java.util.List;
 @Table(name = "USERS")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
@@ -32,6 +36,8 @@ public class UserEntity {
     @Column(name = "RANK", nullable = false)
     private UserRank rank;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "BIRTHDATE", nullable = false)
     private LocalDate birthDate;
 
@@ -39,12 +45,18 @@ public class UserEntity {
     @Column(name = "GENDER", nullable = true)
     private Gender gender;
 
-    @Column(name = "IS_ACTIVE", nullable = true)
-    private boolean isActive;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "WORKING_STATUS", nullable = true)
+    private WorkingStatus workingStatus;
 
     @ManyToMany
     @JoinTable(name = "USERS_TASKS",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "TASK_ID"))
     private List<TaskEntity> tasks;
+
+    public void addTask(TaskEntity task) {
+        tasks.add(task);
+        task.getUsers().add(this);
+    }
 }

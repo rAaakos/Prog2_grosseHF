@@ -1,5 +1,9 @@
 package com.akos.database.entities;
 
+import com.akos.database.serializer.LocalDateDeserializer;
+import com.akos.database.serializer.LocalDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,11 +23,11 @@ import java.util.List;
 public class TaskEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME", nullable = false)
-    private String Name;
+    private String name;
 
     @Column(name = "Description", nullable = true)
     private String description;
@@ -32,12 +37,14 @@ public class TaskEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "TYPE", nullable = false)
-    private UserRank type;
+    private TaskType type;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @Column(name = "DEADLINE", nullable = false)
     private LocalDate deadLine;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "STATE", nullable = false)
     private TaskState state;
 
@@ -47,6 +54,33 @@ public class TaskEntity {
     @Column(name = "PERSONS_NEED")
     private Long personsNeeded;
 
-    @ManyToMany(mappedBy = "tasks")
+
+    //ez mukodik igy fetchel
+    @ManyToMany(mappedBy = "tasks", fetch = FetchType.EAGER)
     private List<UserEntity> users;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        TaskEntity that = (TaskEntity) obj;
+        //bcs test only functions like this
+        boolean isBothNull = users.isEmpty() && that.users.isEmpty();
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(workTimePerWeekPerPerson, that.workTimePerWeekPerPerson) &&
+                type == that.type &&
+                Objects.equals(deadLine, that.deadLine) &&
+                state == that.state &&
+                Objects.equals(weeksNeeded, that.weeksNeeded) &&
+                Objects.equals(personsNeeded, that.personsNeeded) &&
+                (Objects.equals(users, that.users) || isBothNull);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, workTimePerWeekPerPerson, type, deadLine, state, weeksNeeded, personsNeeded, users);
+    }
+
 }
