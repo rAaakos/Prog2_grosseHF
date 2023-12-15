@@ -13,7 +13,6 @@ public class TestDataUtil {
     public static List<UserDto> createListOfUsers() {
         return Arrays.asList(createTestUserDtoA());
     }
-
     public static TaskDto createTaskDto1() {
         return TaskDto.builder()
                 .name("Task 1")
@@ -39,7 +38,6 @@ public class TestDataUtil {
                 .personsNeeded(2L)
                 .build();
     }
-
     public static UserDto createTestUserDtoA() {
 
         UserDto userA = UserDto.builder()

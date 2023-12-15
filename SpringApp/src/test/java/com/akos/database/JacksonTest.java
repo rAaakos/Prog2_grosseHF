@@ -18,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class JacksonTest {
 
     ObjectMapper objectMapper = new ObjectMapper();
-
     @Test
     public void FromJavaToJSON() throws JsonProcessingException {
         TaskEntity task = TaskEntity.builder()
@@ -34,7 +33,7 @@ public class JacksonTest {
 
 
         String result = objectMapper.writeValueAsString(task);
-        assertThat(result).isEqualTo("{\"id\":null,\"name\":\"Task 1\",\"description\":\"Description for Task 1\",\"workTimePerWeekPerPerson\":10,\"type\":\"TESTING\",\"deadLine\":\"2023-12-31\",\"state\":\"IN_PROGRESS\",\"weeksNeeded\":2,\"personsNeeded\":3}");
+        assertThat(result).isEqualTo("{\"id\":null,\"name\":\"Task 1\",\"description\":\"Description for Task 1\",\"workTimePerWeekPerPerson\":10,\"type\":\"TESTING\",\"deadLine\":\"2023-12-31\",\"state\":\"IN_PROGRESS\",\"weeksNeeded\":2,\"personsNeeded\":3,\"users\":null}");
     }
 
 
