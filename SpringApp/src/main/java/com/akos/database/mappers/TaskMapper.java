@@ -2,6 +2,7 @@ package com.akos.database.mappers;
 
 import com.akos.database.dtos.TaskDto;
 import com.akos.database.entities.TaskEntity;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ public class TaskMapper implements Mapper<TaskEntity, TaskDto> {
 
     public TaskMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+        this.modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
     }
 
     @Override

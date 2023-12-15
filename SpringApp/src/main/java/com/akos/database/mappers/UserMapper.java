@@ -2,6 +2,7 @@ package com.akos.database.mappers;
 
 import com.akos.database.dtos.UserDto;
 import com.akos.database.entities.UserEntity;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ public class UserMapper implements Mapper<UserEntity, UserDto> {
 
     public UserMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+        this.modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
     }
 
     @Override
