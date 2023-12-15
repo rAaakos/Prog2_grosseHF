@@ -6,16 +6,23 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class implementing the Mapper interface for mapping between TaskEntity and TaskDto.
+ */
 @Service
 public class TaskMapper implements Mapper<TaskEntity, TaskDto> {
 
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructs a TaskMapper with the provided ModelMapper instance.
+     *
+     * @param modelMapper The ModelMapper instance to be used for mapping.
+     */
     public TaskMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
         this.modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
     }
-
     @Override
     public TaskDto toDto(TaskEntity task) {
         return modelMapper.map(task, TaskDto.class);

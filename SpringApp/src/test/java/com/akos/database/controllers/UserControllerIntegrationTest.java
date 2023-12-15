@@ -266,5 +266,6 @@ public class UserControllerIntegrationTest {
         ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].workHoursPerWeek").value(25L)
         );
     }
+
 }
 

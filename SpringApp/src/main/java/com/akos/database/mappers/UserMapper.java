@@ -6,10 +6,18 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class implementing the Mapper interface for mapping between UserEntity and UserDto.
+ */
 @Service
 public class UserMapper implements Mapper<UserEntity, UserDto> {
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructs a TaskMapper with the provided ModelMapper instance.
+     *
+     * @param modelMapper The ModelMapper instance to be used for mapping.
+     */
     public UserMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
         this.modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());

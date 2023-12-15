@@ -12,15 +12,31 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Controller class for managing tasks.
+ * This class handles HTTP requests related to tasks, including retrieval, creation, updating, and deletion.
+ */
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
+
     private final TaskService taskService;
 
+    /**
+     * Constructs a new TaskController with the specified TaskService.
+     *
+     * @param taskService The TaskService used for handling task-related operations.
+     */
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 
+    /**
+     * Retrieves all tasks with pagination support.
+     *
+     * @param pageable The pageable information for retrieving tasks.
+     * @return ResponseEntity containing a Page of TaskDto or an error response.
+     */
     @GetMapping
     public ResponseEntity<Page<TaskDto>> getAllTasks(Pageable pageable) {
         try {
@@ -31,6 +47,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Retrieves a task by its ID.
+     *
+     * @param id The ID of the task to retrieve.
+     * @return ResponseEntity containing a TaskDto or an error response.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
         try {
@@ -41,6 +63,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Creates a new task.
+     *
+     * @param taskDto The TaskDto representing the task to be created.
+     * @return ResponseEntity containing the created TaskDto or an error response.
+     */
     @PostMapping
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto taskDto) {
         try {
@@ -51,6 +79,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Deletes a task by its ID.
+     *
+     * @param id The ID of the task to delete.
+     * @return ResponseEntity with no content or an error response.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         try {
@@ -61,6 +95,13 @@ public class TaskController {
         }
     }
 
+    /**
+     * Updates a task by its ID.
+     *
+     * @param id      The ID of the task to update.
+     * @param taskDto The TaskDto representing the updated task data.
+     * @return ResponseEntity containing the updated TaskDto or an error response.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
         try {
@@ -73,6 +114,13 @@ public class TaskController {
         }
     }
 
+    /**
+     * Partially updates a task by its ID.
+     *
+     * @param id      The ID of the task to partially update.
+     * @param taskDto The TaskDto representing the partially updated task data.
+     * @return ResponseEntity containing the partially updated TaskDto or an error response.
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<TaskDto> partialUpdateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
         try {
@@ -85,6 +133,12 @@ public class TaskController {
         }
     }
 
+    /**
+     * Retrieves all available tasks with pagination support.
+     *
+     * @param pageable The pageable information for retrieving tasks.
+     * @return ResponseEntity containing a Page of TaskDto or an error response.
+     */
     @GetMapping("/availableTasks")
     public ResponseEntity<Page<TaskDto>> getAllAvailableTasks(Pageable pageable) {
         try {
@@ -95,6 +149,13 @@ public class TaskController {
         }
     }
 
+    /**
+     * Retrieves all available tasks of a specific type with pagination support.
+     *
+     * @param pageable The pageable information for retrieving tasks.
+     * @param taskType The TaskType representing the type of tasks to retrieve.
+     * @return ResponseEntity containing a Page of TaskDto or an error response.
+     */
     @GetMapping("/taskType/{taskType}")
     public ResponseEntity<Page<TaskDto>> getAllAvailableTasks(Pageable pageable, @PathVariable TaskType taskType) {
         try {
@@ -105,3 +166,4 @@ public class TaskController {
         }
     }
 }
+
