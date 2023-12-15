@@ -11,8 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -55,32 +54,8 @@ public class TaskEntity {
     private Long personsNeeded;
 
 
-    //ez mukodik igy fetchel
-    @ManyToMany(mappedBy = "tasks", fetch = FetchType.EAGER)
-    private List<UserEntity> users;
+    @ManyToMany(mappedBy = "tasks", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<UserEntity> users;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        TaskEntity that = (TaskEntity) obj;
-        //bcs test only functions like this
-        boolean isBothNull = users.isEmpty() && that.users.isEmpty();
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(workTimePerWeekPerPerson, that.workTimePerWeekPerPerson) &&
-                type == that.type &&
-                Objects.equals(deadLine, that.deadLine) &&
-                state == that.state &&
-                Objects.equals(weeksNeeded, that.weeksNeeded) &&
-                Objects.equals(personsNeeded, that.personsNeeded) &&
-                (Objects.equals(users, that.users) || isBothNull);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description, workTimePerWeekPerPerson, type, deadLine, state, weeksNeeded, personsNeeded, users);
-    }
 
 }

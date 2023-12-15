@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -49,14 +49,10 @@ public class UserEntity {
     @Column(name = "WORKING_STATUS", nullable = true)
     private WorkingStatus workingStatus;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_TASKS",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "TASK_ID"))
-    private List<TaskEntity> tasks;
+    private Set<TaskEntity> tasks;
 
-    public void addTask(TaskEntity task) {
-        tasks.add(task);
-        task.getUsers().add(this);
-    }
 }
