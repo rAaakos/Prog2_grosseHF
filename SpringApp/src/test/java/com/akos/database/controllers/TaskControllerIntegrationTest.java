@@ -220,5 +220,31 @@ public class TaskControllerIntegrationTest {
         ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].state").value("IN_PROGRESS")
         );
     }
+
+    @Test
+    public void testGetTasksWithCertainType() throws Exception {
+        TaskDto testTask1 = TestDataUtil.createTaskDto1();
+        TaskDto testTask2 = TestDataUtil.createTaskDto2();
+        TaskDto savedTask1 = taskService.save(testTask1);
+        TaskDto savedTask2 = taskService.save(testTask2);
+        int page = 0;
+        int size = 10;
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/tasks/taskType/{taskType}", savedTask1.getType())
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").isArray()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").value(hasSize(1))
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].type").value("TESTING")
+        );
+    }
+
+
+
 }
 

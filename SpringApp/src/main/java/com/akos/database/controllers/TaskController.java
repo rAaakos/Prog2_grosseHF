@@ -1,6 +1,7 @@
 package com.akos.database.controllers;
 
 import com.akos.database.dtos.TaskDto;
+import com.akos.database.entities.TaskType;
 import com.akos.database.services.TaskService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -88,6 +89,16 @@ public class TaskController {
     public ResponseEntity<Page<TaskDto>> getAllAvailableTasks(Pageable pageable) {
         try {
             Page<TaskDto> tasks = taskService.findAvailableTasks(pageable);
+            return ResponseEntity.ok(tasks);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to find tasks", e);
+        }
+    }
+
+    @GetMapping("/taskType/{taskType}")
+    public ResponseEntity<Page<TaskDto>> getAllAvailableTasks(Pageable pageable, @PathVariable TaskType taskType) {
+        try {
+            Page<TaskDto> tasks = taskService.findTaskType(pageable, taskType);
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to find tasks", e);

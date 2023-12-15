@@ -3,6 +3,7 @@ package com.akos.database.services;
 import com.akos.database.dtos.TaskDto;
 import com.akos.database.entities.TaskEntity;
 import com.akos.database.entities.TaskState;
+import com.akos.database.entities.TaskType;
 import com.akos.database.mappers.TaskMapper;
 import com.akos.database.repositories.TaskRepository;
 import org.springframework.data.domain.Page;
@@ -77,6 +78,11 @@ public class TaskService {
 
     public Page<TaskDto> findAvailableTasks(Pageable pageable) {
         Page<TaskEntity> taskEntities = taskRepository.findByStateNot(TaskState.COMPLETED, pageable);
+        return taskEntities.map(taskMapper::toDto);
+    }
+
+    public Page<TaskDto> findTaskType(Pageable pageable, TaskType taskType) {
+        Page<TaskEntity> taskEntities = taskRepository.findTaskTypeLikeThis(taskType, pageable);
         return taskEntities.map(taskMapper::toDto);
     }
 }

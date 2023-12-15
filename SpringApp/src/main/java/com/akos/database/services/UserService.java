@@ -2,7 +2,9 @@ package com.akos.database.services;
 
 import com.akos.database.dtos.UserDto;
 import com.akos.database.entities.TaskEntity;
+import com.akos.database.entities.TaskState;
 import com.akos.database.entities.UserEntity;
+import com.akos.database.entities.UserRank;
 import com.akos.database.mappers.UserMapper;
 import com.akos.database.repositories.TaskRepository;
 import com.akos.database.repositories.UserRepository;
@@ -77,6 +79,9 @@ public class UserService {
 
         TaskEntity taskEntity = taskRepository.findById(taskId).
                 orElseThrow(() -> new IllegalArgumentException("Task not found with this id:" + taskId));
+        if (taskEntity.getState().equals(TaskState.COMPLETED)) {
+            throw new IllegalArgumentException("Task has already been completed");
+        }
         userEntity.getTasks().add(taskEntity);
 
         UserEntity updatedUser = userRepository.save(userEntity);
@@ -85,6 +90,16 @@ public class UserService {
 
     public Page<UserDto> findAvailableUsers(Pageable pageable) {
         Page<UserEntity> userEntities = userRepository.findUsersWhoAreActivelyWorking(pageable);
+        return userEntities.map(userMapper::toDto);
+    }
+
+    public Page<UserDto> findUsersWithRank(Pageable pageable, UserRank rank) {
+        Page<UserEntity> userEntities = userRepository.findUsersWithThisTypeOfRank(rank, pageable);
+        return userEntities.map(userMapper::toDto);
+    }
+
+    public Page<UserDto> findUsersWithLessWeeklyWorkHours(Pageable pageable, Long weeklyWorkHours) {
+        Page<UserEntity> userEntities = userRepository.findUsersWithLessWeeklyWorkHours(weeklyWorkHours, pageable);
         return userEntities.map(userMapper::toDto);
     }
 }

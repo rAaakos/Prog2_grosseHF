@@ -216,5 +216,55 @@ public class UserControllerIntegrationTest {
         ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].firstName").value("Akos")
         );
     }
+
+    @Test
+    void testGetAllUsersWithThisRank() throws Exception {
+        UserDto userDtoA = TestDataUtil.createTestUserDtoA();
+        UserDto userDtoB = TestDataUtil.createTestUserDtoB();
+        UserDto savedUser1 = userService.save(userDtoA);
+        UserDto savedUser2 = userService.save(userDtoB);
+
+        int page = 0;
+        int size = 10;
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/usersRank/{rank}", savedUser1.getRank())
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").isArray()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").value(hasSize(1))
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].rank").value("BOSS")
+        );
+    }
+
+    @Test
+    void testGetAllUsersWithLessWorkingHourPerWeek() throws Exception {
+        UserDto userDtoA = TestDataUtil.createTestUserDtoA();
+        UserDto userDtoB = TestDataUtil.createTestUserDtoB();
+        UserDto savedUser1 = userService.save(userDtoA);
+        UserDto savedUser2 = userService.save(userDtoB);
+
+        int page = 0;
+        int size = 10;
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/workingLessThan/{hours}", savedUser1.getWorkHoursPerWeek())
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").isArray()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.content").value(hasSize(1))
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.content[0].workHoursPerWeek").value(25L)
+        );
+    }
 }
 

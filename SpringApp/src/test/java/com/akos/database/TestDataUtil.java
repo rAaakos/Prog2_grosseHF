@@ -35,7 +35,7 @@ public class TestDataUtil {
                 .deadLine(LocalDate.of(2023, 12, 15))
                 .state(TaskState.COMPLETED)
                 .weeksNeeded(3L)
-                .personsNeeded(2L)
+                .personsNeeded(10L)
                 .build();
     }
     public static UserDto createTestUserDtoA() {
@@ -44,7 +44,7 @@ public class TestDataUtil {
                 .firstName("Akos")
                 .familyName("Albert")
                 .workHoursPerWeek(30L)
-                .rank(UserRank.WORKER)
+                .rank(UserRank.BOSS)
                 .birthDate(LocalDate.of(2003, 7, 11))
                 .gender(Gender.MALE)
                 .workingStatus(WorkingStatus.ACTIVE)

@@ -1,6 +1,7 @@
 package com.akos.database.controllers;
 
 import com.akos.database.dtos.UserDto;
+import com.akos.database.entities.UserRank;
 import com.akos.database.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -107,5 +108,24 @@ public class UserController {
         }
     }
 
+    @GetMapping("/usersRank/{rank}")
+    public ResponseEntity<Page<UserDto>> getUsersWithLessThanWeeklyWorkHours(Pageable pageable, @PathVariable UserRank rank) {
+        try {
+            Page<UserDto> users = userService.findUsersWithRank(pageable, rank);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to find users", e);
+        }
+    }
+
+    @GetMapping("/workingLessThan/{hours}")
+    public ResponseEntity<Page<UserDto>> getUsersWithLessThanWeeklyWorkHours(Pageable pageable, @PathVariable Long hours) {
+        try {
+            Page<UserDto> users = userService.findUsersWithLessWeeklyWorkHours(pageable, hours);
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to find users", e);
+        }
+    }
 
 }
