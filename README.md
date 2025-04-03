@@ -1,4 +1,5 @@
 Feladat- és Felhasználókezelő Rendszer (Java Spring)
+
 📌 Projekt áttekintés
 Ez a projekt egy Java Spring alapú feladat- és felhasználókezelő rendszer, amely lehetővé teszi a feladatok nyilvántartását, kiosztását és állapotuk követését. A rendszer REST API-t biztosít, amelyen keresztül a felhasználók és feladataik kezelhetők, beleértve a hozzárendelést, frissítést és szűrést.
 
